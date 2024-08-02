@@ -6,7 +6,7 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 05:30:09 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/08/02 12:47:04 by dmeirele         ###   ########.fr       */
+/*   Updated: 2024/08/02 19:44:09 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void Bureaucrat::setGrade(int grade)
 
 ostream& operator<<(ostream &out, const Bureaucrat &Bureaucrat)
 {
-	out << Green << Bureaucrat.getName() << ", bureaucrat grade " << Bureaucrat.getGrade() << Reset;
+	out << Green << Bureaucrat.getName() << ", bureaucrat grade " << Bureaucrat.getGrade() << Reset << endl;
 	return (out);
 }
 
