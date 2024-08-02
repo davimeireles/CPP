@@ -6,14 +6,14 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 15:57:18 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/07/22 17:45:03 by dmeirele         ###   ########.fr       */
+/*   Updated: 2024/08/02 23:20:55 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Base.hpp"
-#include "A.hpp"
-#include "B.hpp"
-#include "C.hpp"
+#include "../headers/Base.hpp"
+#include "../headers/A.hpp"
+#include "../headers/B.hpp"
+#include "../headers/C.hpp"
 
 Base::~Base(void) {}
 
@@ -44,6 +44,8 @@ void identify(Base* p)
 		std::cout << "Identify B" << std::endl;
 	else if (dynamic_cast<C*>(p))
 		std::cout << "Identify C" << std::endl;
+	else
+		std::cout << "Unknown" << std::endl;
 }
 
 void identify(Base& p)

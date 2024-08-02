@@ -6,7 +6,7 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 15:46:44 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/07/22 17:14:53 by dmeirele         ###   ########.fr       */
+/*   Updated: 2024/08/02 23:27:03 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ class Base
 		virtual ~Base(void);
 
 };
-
 	Base* generate(void);
 	void identify(Base* p);
 	void identify(Base& p);
