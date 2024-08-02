@@ -6,16 +6,16 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 00:44:55 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/08/02 19:22:37 by dmeirele         ###   ########.fr       */
+/*   Updated: 2024/08/02 19:25:56 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/Bureaucrat.hpp"
-
+#include "../headers/includes.hpp"
 
 static void enter_to_continue()
 {
-	cout << "\n\nPress |ENTER| TWICE to continue" << endl;
+	cout << "\n\nPress |ENTER| to continue" << endl;
 	std::cin.get();
 	system("clear");
 }
