@@ -49,14 +49,11 @@ RESET = \033[0m
 all: $(NAME)
 
 $(NAME): $(OBJECTS_DIRECTORY) $(OBJECTS)
+	@echo "[$(CYAN)Executable$(RESET)] $(GREEN)$(NAME)$(RESET)"
 	@$(COMPILER) $(FLAGS) $(OBJECTS) -o $(NAME)
 
 $(OBJECTS_DIRECTORY)/%.o: $(SOURCES)/%.cpp
-	$(eval COMPTEUR=$(shell echo $$(($(COMPTEUR)+1))))
-	@printf "\e[?25l"
-	@if test $(COMPTEUR) -eq 1;then \
-		printf "$(B_YELLOW)$(NAME)$(RESET):$(YELLOW) Compiling binary files...$(RESET)\n\n";fi
-	@printf "\033[A\33[2K\r$(CYAN)Binary $(COMPTEUR): $@$(RESET)\n"
+	@echo "[$(CYAN)Compiling$(RESET)] $(FLAGS) $(GREEN)$<$(RESET)"
 	@$(COMPILER) $(FLAGS) $(I) -c $< -o $@
 
 $(OBJECTS_DIRECTORY):

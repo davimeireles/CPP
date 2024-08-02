@@ -6,11 +6,11 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 15:28:59 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/07/22 15:29:18 by dmeirele         ###   ########.fr       */
+/*   Updated: 2024/08/02 23:12:04 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Serializer.hpp"
+#include "../headers/Serializer.hpp"
 
 Serializer::Serializer(void) {}
 
