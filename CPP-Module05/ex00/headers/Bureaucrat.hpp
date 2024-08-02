@@ -6,7 +6,7 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 04:02:17 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/07/30 07:19:53 by dmeirele         ###   ########.fr       */
+/*   Updated: 2024/08/02 19:16:11 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,12 @@
 #include <iostream>
 #include <exception>
 #include <cstdlib>
+#include "includes.hpp"
 
 #define Red "\033[31m"
 #define Green "\033[32m"
 #define Orange "\033[38;5;208m"
 #define Reset "\033[0m"
-
-using std::string;
-using std::cout;
-using std::endl;
-using std::ostream;
 
 class Bureaucrat
 {

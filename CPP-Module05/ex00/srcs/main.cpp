@@ -6,49 +6,119 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 00:44:55 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/08/02 12:51:56 by dmeirele         ###   ########.fr       */
+/*   Updated: 2024/08/02 19:22:37 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/Bureaucrat.hpp"
 
-int main()
+
+static void enter_to_continue()
 {
+	cout << "\n\nPress |ENTER| TWICE to continue" << endl;
+	std::cin.get();
 	system("clear");
+}
+
+static void testCreateBureaucrat()
+{
 	try
 	{
-	cout << Orange << "[ --- Normal Constructor --- ]" << Reset << endl;
-	Bureaucrat defaultBureaucrat;
-	cout << defaultBureaucrat << endl;
-
-	Bureaucrat highGradeBureaucrat("HighGrade", 1);
-	cout << highGradeBureaucrat << endl;
-
-	Bureaucrat lowGradeBureaucrat("LowGrade", 150);
-	cout << lowGradeBureaucrat << endl << endl;
-
-	cout << Orange << "[ --- Copy Constructor --- ]" << Reset << endl;
-	Bureaucrat copyBureaucrat(highGradeBureaucrat);
-	cout << copyBureaucrat << endl << endl;
-
-	cout << Orange << "[ --- Assign Operator --- ]" << Reset << endl;
-	Bureaucrat assignedBureaucrat = lowGradeBureaucrat;
-	cout << assignedBureaucrat << endl << endl;
-
-	cout << Orange << "[ --- Increase and Decrease Grade Test --- ]" << Reset << endl;
-	highGradeBureaucrat.IncreaseGrade();
-	cout << "Increased grade: " << highGradeBureaucrat.getGrade() << endl;
-	lowGradeBureaucrat.DecreaseGrade();
-	cout << "Decreased grade: " << lowGradeBureaucrat.getGrade() << endl << endl;
-
-	cout << Orange << "[ --- Testing Exceptions --- ]" << Reset << endl;
-	Bureaucrat tooHigh("TooHigh", 0);
-	Bureaucrat tooLow("TooLow", 151);
+		Bureaucrat b1("Bureaucrat1", 1);
+		cout << b1 << endl;
+		Bureaucrat b2("Bureaucrat2", 150);
+		cout << b2 << endl;
 	}
 	catch(const std::exception& e)
 	{
-		std::cerr << Red << e.what() << Reset <<'\n';
+		std::cerr << Red << e.what() << '\n' << Reset;
 	}
 
-return 0;
+	try
+	{
+		Bureaucrat b3("Bureaucrat3", 0);
+		cout << b3 << endl;
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << Red << e.what() << '\n' << Reset;
+	}
+
+	try
+	{
+		Bureaucrat b4("Bureaucrat4", 151);
+		cout << b4 << endl;
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << Red << e.what() << '\n' << Reset;
+	}
+}
+
+static void testIncreaseGrade()
+{
+	try
+	{
+		Bureaucrat b1("Bureaucrat1", 1);
+		cout << b1 << endl;
+		b1.IncreaseGrade();
+		cout << b1 << endl;
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << Red << e.what() << '\n' << Reset;
+	}
+
+	try
+	{
+		Bureaucrat b2("Bureaucrat2", 150);
+		cout << b2 << endl;
+		b2.IncreaseGrade();
+		cout << b2 << endl;
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << Red << e.what() << '\n' << Reset;
+	}
+}
+
+static void testDecreaseGrade()
+{
+	try
+	{
+		Bureaucrat b1("Bureaucrat1", 1);
+		cout << b1 << endl;
+		b1.DecreaseGrade();
+		cout << b1 << endl;
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << Red << e.what() << '\n' << Reset;
+	}
+
+	try
+	{
+		Bureaucrat b2("Bureaucrat2", 150);
+		cout << b2 << endl;
+		b2.DecreaseGrade();
+		cout << b2 << endl;
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << Red << e.what() << '\n' << Reset;
+	}
+}
+
+int main()
+{
+	cout << Yellow << "Test Create Bureaucrat" << Reset << endl;
+	testCreateBureaucrat();
+	enter_to_continue();
+	cout << Yellow << "Test Increase Grade" << Reset << endl;
+	testIncreaseGrade();
+	enter_to_continue();
+	cout << Yellow << "Test Decrease Grade" << Reset << endl;
+	testDecreaseGrade();
+	enter_to_continue();
+	return (0);
 }
