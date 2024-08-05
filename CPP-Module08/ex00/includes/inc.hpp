@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/05 06:29:59 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/08/05 07:46:12 by dmeirele         ###   ########.fr       */
+/*   Created: 2024/08/05 04:16:02 by dmeirele          #+#    #+#             */
+/*   Updated: 2024/08/05 04:38:49 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,10 @@
 # include <iostream>
 # include <cstdlib>
 # include <iomanip>
-# include <climits>
+# include <limits>
 # include <exception>
 # include <algorithm>
 # include <vector>
-# include <list>
-# include <stack>
 
 using std::string;
 using std::cout;

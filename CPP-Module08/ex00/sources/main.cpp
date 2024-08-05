@@ -6,34 +6,57 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 15:24:29 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/07/26 19:53:37 by dmeirele         ###   ########.fr       */
+/*   Updated: 2024/08/05 06:50:40 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "easyfind.hpp"
+#include "../includes/easyfind.hpp"
+#include "../includes/inc.hpp"
+
+static void enter_to_continue()
+{
+	cout << "\n\nPress |ENTER| to continue" << endl;
+	std::cin.get();
+	system("clear");
+}
+
+static void TestWithVector()
+{
+	std::vector<int> vec;
+
+	for (int i = 0; i < 10; i++)
+		vec.push_back(i);
+
+	cout << Yellow << "Testing with a vector of integers" << Reset << endl;
+	cout << "Vector: ";
+	for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); it++)
+		cout << *it << " ";
+	cout << endl;
+
+	try
+	{
+		cout << "Searching for 5: ";
+		cout << Green << easyfind(vec, 5) << Reset << endl;
+	}
+	catch (std::exception &e)
+	{
+		cout << Red << "Element not found" << Reset << endl;
+	}
+
+	try
+	{
+		cout << "Searching for 10: ";
+		cout << Green << easyfind(vec, 10) << Reset << endl;
+	}
+	catch (std::exception &e)
+	{
+		cout << Red << "Element not found" << Reset << endl;
+	}
+	enter_to_continue();
+}
 
 int main()
 {
-	std::vector<int> numbers;
-	numbers.push_back(1);
-	numbers.push_back(2);
-	numbers.push_back(3);
-	numbers.push_back(4);
-	numbers.push_back(5);
-
-	std::cout << Yellow << "Test With Valid Values" << Reset << std::endl << std::endl;
-	easyfind(numbers, 1);
-	easyfind(numbers, 2);
-	easyfind(numbers, 3);
-	easyfind(numbers, 4);
-	easyfind(numbers, 5);
-	
-	std::endl(std::cout);
-	std::cout << Yellow << "Test With Invalid Values" << Reset << std::endl << std::endl;
-	easyfind(numbers, 20);
-	easyfind(numbers, 15);
-	easyfind(numbers, -20);
-	easyfind(numbers, 17);
-	easyfind(numbers, 14);
-	std::endl(std::cout);
+	TestWithVector();
+	return (0);
 }
