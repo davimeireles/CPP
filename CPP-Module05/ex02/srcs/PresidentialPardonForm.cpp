@@ -21,9 +21,8 @@ PresidentialPardonForm::PresidentialPardonForm(const PresidentialPardonForm &ori
 }
 
 PresidentialPardonForm& PresidentialPardonForm::operator=(const PresidentialPardonForm &rhs) {
-	if (this != &rhs) {
-		AForm::operator=(rhs);
-	}
+	if (this == &rhs)
+		return (*this);
 	return (*this);
 }
 

@@ -21,9 +21,8 @@ RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm &original) : 
 }
 
 RobotomyRequestForm& RobotomyRequestForm::operator=(const RobotomyRequestForm &rhs) {
-	if (this != &rhs) {
-		AForm::operator=(rhs);
-	}
+	if (this == &rhs)
+		return (*this);
 	return (*this);
 }
 

@@ -40,11 +40,10 @@ RESET = \033[0m
 all: $(NAME)
 
 $(NAME): $(OBJECTS_DIRECTORY) $(OBJECTS)
-	@echo "$(GREEN) $(COMPILER) $(FLAGS) $(OBJECTS) -o $(NAME) $(RESET)"
 	@$(COMPILER) $(FLAGS) $(OBJECTS) -o $(NAME)
+	@echo "$(GREEN)[Executable Created]$(RESET)"
 
 $(OBJECTS_DIRECTORY)/%.o: $(SOURCES)/%.cpp
-	@echo "$(GREEN) $(COMPILER) $(FLAGS) $(I) -c $< -o $@ $(RESET)"
 	@$(COMPILER) $(FLAGS) $(I) -c $< -o $@
 
 $(OBJECTS_DIRECTORY):

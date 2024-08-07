@@ -30,8 +30,10 @@ static void testMakeForms()
 	try
 	{
 		Intern intern;
-		AForm *f1 = intern.makeForm("PresidentialPardonForm", "target1");
+		AForm *f1 = intern.makeForm("presidential pardon", "target1");
 		cout << Cyan << *f1 << Reset;
+		Bureaucrat b1("b1", 4);
+		b1.signForm(*f1);
 		delete f1;
 	}
 	catch(const std::exception& e)
@@ -42,8 +44,10 @@ static void testMakeForms()
 	try
 	{
 		Intern intern;
-		AForm *f2 = intern.makeForm("ShrubberyCreationForm", "target2");
+		AForm *f2 = intern.makeForm("shrubbery creation", "target2");
 		cout << Cyan << *f2 << Reset;
+		Bureaucrat b2("b2", 132);
+		b2.signForm(*f2);
 		delete f2;
 	}
 	catch(const std::exception& e)
@@ -54,8 +58,10 @@ static void testMakeForms()
 	try
 	{
 		Intern intern;
-		AForm *f3 = intern.makeForm("RobotomyRequestForm", "target3");
+		AForm *f3 = intern.makeForm("robotomy request", "target3");
 		cout << Cyan << *f3 << Reset;
+		Bureaucrat b3("b3", 120);
+		b3.signForm(*f3);
 		delete f3;
 	}
 	catch(const std::exception& e)
