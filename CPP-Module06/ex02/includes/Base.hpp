@@ -1,24 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Data.hpp                                           :+:      :+:    :+:   */
+/*   Base.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/22 15:07:25 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/07/22 15:08:17 by dmeirele         ###   ########.fr       */
+/*   Created: 2024/08/12 18:30:17 by dmeirele          #+#    #+#             */
+/*   Updated: 2024/08/12 18:32:14 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DATA_HPP
-#define DATA_HPP
+#ifndef BASE_HPP
+#define BASE_HPP
 
-#include <iostream>
+#include "includes.hpp"
 
-typedef struct Data
-{
-	std::string name;
-	int age;
-} Data;
+class A;
+class B;
+class C;
+
+class Base
+{	
+	public:
+		virtual ~Base(void);
+
+};
+	Base* generate(void);
+	void identify(Base* p);
+	void identify(Base& p);
 
 #endif

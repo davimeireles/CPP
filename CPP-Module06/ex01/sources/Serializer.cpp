@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/22 15:28:59 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/08/02 23:12:04 by dmeirele         ###   ########.fr       */
+/*   Created: 2024/08/12 18:24:33 by dmeirele          #+#    #+#             */
+/*   Updated: 2024/08/12 18:24:49 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/Serializer.hpp"
+#include "../includes/Serializer.hpp"
 
 Serializer::Serializer(void) {}
 

@@ -1,25 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   A.hpp                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/12 18:28:55 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/08/12 18:29:01 by dmeirele         ###   ########.fr       */
+/*   Created: 2024/08/12 18:30:29 by dmeirele          #+#    #+#             */
+/*   Updated: 2024/08/12 18:32:20 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/ScalarConverter.hpp"
-#include "../includes/includes.hpp"
+#ifndef A_HPP
+#define A_HPP
 
-int main(int argc, char **argv)
-{
-	if (argc != 2)
-	{
-		std::cerr << "Usage: ./convert [input]" << std::endl;
-		return (1);
-	}
-	else
-		ScalarConverter::convert(argv[1]);
-}
+#include "Base.hpp"
+#include "includes.hpp"
+
+class A : public Base {};
+
+#endif

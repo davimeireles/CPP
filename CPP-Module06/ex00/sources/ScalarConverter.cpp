@@ -5,13 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/19 16:22:33 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/08/02 22:49:32 by dmeirele         ###   ########.fr       */
+/*   Created: 2024/08/12 18:28:30 by dmeirele          #+#    #+#             */
+/*   Updated: 2024/08/12 18:28:39 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/ScalarConverter.hpp"
-#include "../headers/includes.hpp"
+#include "../includes/ScalarConverter.hpp"
+#include "../includes/includes.hpp"
 
 ScalarConverter::ScalarConverter(void){}
 

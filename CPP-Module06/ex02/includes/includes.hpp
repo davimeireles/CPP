@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/31 04:26:47 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/08/02 22:04:11 by dmeirele         ###   ########.fr       */
+/*   Created: 2024/08/12 18:30:58 by dmeirele          #+#    #+#             */
+/*   Updated: 2024/08/12 18:36:10 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,14 @@
 #define INCLUDES_HPP
 
 #include <iostream>
+#include <math.h>
 #include <cstdlib>
-#include <iomanip>
-#include <limits>
+#include <ctime>
 
 using std::string;
 using std::cout;
 using std::endl;
-using std::numeric_limits;
 using std::fixed;
-using std::setprecision;
 
 #define Red "\033[31m"
 #define Green "\033[32m"

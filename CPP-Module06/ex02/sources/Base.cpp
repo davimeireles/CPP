@@ -5,15 +5,15 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/22 15:57:18 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/08/02 23:20:55 by dmeirele         ###   ########.fr       */
+/*   Created: 2024/08/12 18:34:30 by dmeirele          #+#    #+#             */
+/*   Updated: 2024/08/12 18:34:35 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/Base.hpp"
-#include "../headers/A.hpp"
-#include "../headers/B.hpp"
-#include "../headers/C.hpp"
+#include "../includes/Base.hpp"
+#include "../includes/A.hpp"
+#include "../includes/B.hpp"
+#include "../includes/C.hpp"
 
 Base::~Base(void) {}
 

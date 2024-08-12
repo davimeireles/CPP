@@ -1,7 +1,7 @@
 #	====================		Directories		====================
 
 SOURCES = sources
-HEADERS = headers
+HEADERS = includes
 OBJECTS_DIRECTORY = objects
 
 #	====================		Files      		====================

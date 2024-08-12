@@ -1,20 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   C.hpp                                              :+:      :+:    :+:   */
+/*   Data.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/22 15:55:14 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/07/22 16:53:28 by dmeirele         ###   ########.fr       */
+/*   Created: 2024/08/12 18:23:23 by dmeirele          #+#    #+#             */
+/*   Updated: 2024/08/12 18:23:24 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef C_HPP
-#define	C_HPP
+#ifndef DATA_HPP
+#define DATA_HPP
 
-#include "Base.hpp"
+#include "includes.hpp"
 
-class C : public Base {};
+typedef struct Data
+{
+	std::string name;
+	int age;
+} Data;
 
 #endif
