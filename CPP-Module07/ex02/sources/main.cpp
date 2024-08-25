@@ -6,7 +6,7 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 03:17:17 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/08/05 04:06:59 by dmeirele         ###   ########.fr       */
+/*   Updated: 2024/08/25 13:12:36 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static void TestEmptyArray()
 	{
 		cout << Red << e.what() << Reset << endl;
 	}
+	enter_to_continue();
 }
 
 static void TestDefaultArray()
@@ -43,6 +44,7 @@ static void TestDefaultArray()
 	
 	for(unsigned int i = 0; i < array.size(); i++)
 		cout << Cyan << "index[" << i << "]: " << array[i] << endl << Reset;
+	enter_to_continue();
 }
 
 static void TestCopyArray()
@@ -59,6 +61,7 @@ static void TestCopyArray()
 	
 	for(unsigned int i = 0; i < copy.size(); i++)
 		cout << "Copy index[" << i << "]: " << copy[i] << endl;
+	enter_to_continue();
 }
 
 static void TestAssignArray()
@@ -77,6 +80,7 @@ static void TestAssignArray()
 	
 	for(unsigned int i = 0; i < copy.size(); i++)
 		cout << "Copy index[" << i << "]: " << copy[i] << endl;
+	enter_to_continue();
 }
 
 static void TestAccessingElements()
@@ -109,7 +113,7 @@ static void TestAccessingElements()
 	{
 		std::cerr << Red << e.what() << Reset << '\n';
 	}
-	
+	enter_to_continue();
 }
 
 static void TestMemberFunction()
@@ -117,27 +121,22 @@ static void TestMemberFunction()
 	Array<int> array(5);
 
 	cout << Orange << "Array size: " << array.size() << endl << Reset;
+	enter_to_continue();
 }
 
 int main()
 {
 	cout << Yellow << "--- Test Empty Array ---" << Reset << endl;
 	TestEmptyArray();
-	enter_to_continue();
 	cout << Yellow << "--- Test Default Array ---" << Reset << endl;
 	TestDefaultArray();
-	enter_to_continue();
 	cout << Yellow << "--- Test Copy Array ---" << Reset << endl;
 	TestCopyArray();
-	enter_to_continue();
 	cout << Yellow << "--- Test Assign Array ---" << Reset << endl;
 	TestAssignArray();
-	enter_to_continue();
 	cout << Yellow << "--- Test Accessing Elements ---" << Reset << endl;
 	TestAccessingElements();
-	enter_to_continue();
 	cout << Yellow << "--- Test Member Function ---" << Reset << endl;
 	TestMemberFunction();
-	enter_to_continue();
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 21:09:16 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/07/22 21:20:08 by dmeirele         ###   ########.fr       */
+/*   Updated: 2024/08/25 13:09:58 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,21 @@
 #define Reset "\033[0m"
 
 template <typename T>
-void iter(T *array, std::size_t length, void (*func)(T const &)) 
+void iter(T *array, std::size_t length, void (*func)(T const &))
 {
 	for (size_t i = 0; i < length; i++)
 		func(array[i]);
 }
 
 template <typename T>
-void	printMsg(T &output) 
+void iter(T *array, std::size_t length, void (*func)(T &))
+{
+	for (size_t i = 0; i < length; i++)
+		func(array[i]);
+}
+
+template <typename T>
+void	printMsg(T const &output) 
 {
 	std::cout << output << std::endl;
 }
