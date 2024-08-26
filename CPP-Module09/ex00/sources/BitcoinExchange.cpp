@@ -35,17 +35,7 @@ void BitcoinExchange::readFromFile(const string &filename)
 	if (!file.is_open())
 	{
 		std::cerr << "Error: could not open file" << endl;
-		return ;
-	}
-	string line;
-	while (std::getline(file, line))
-	{
-		std::stringstream ss(line);
-		string token;
-		while (std::getline(ss, token, ','))
-		{
-			cout << "Token: " << token << endl;
-		}
+		exit(EXIT_FAILURE);
 	}
 	file.close();
 }
