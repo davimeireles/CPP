@@ -32,5 +32,16 @@ int main()
 	iter(numbers, 5, printMsg);
 	std::endl(std::cout);
 
-	return (0);
+	std::cout << Yellow << "Test both iter functions (const and non-const)" << Reset << std::endl;
+    int array[] = {1, 2, 3, 4, 5};
+    std::size_t length = sizeof(array) / sizeof(array[0]);
+
+    iter(array, length, printMsg);
+
+    const int constArray[] = {6, 7, 8, 9, 10};
+    length = sizeof(constArray) / sizeof(constArray[0]);
+
+    iter(constArray, length, static_cast<void(*)(const int&)>(printMsg));
+
+    return 0;
 }
