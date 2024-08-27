@@ -31,12 +31,12 @@ using std::string;
 using std::cout;
 using std::endl;
 
-# define Red "\033[31m"
-# define Green "\033[32m"
-# define Orange "\033[38;5;208m"
-# define Purple "\e[35m"
-# define Yellow "\033[33m"
-# define Cyan "\033[36m"
-# define Reset "\033[0m"
+# define RED "\033[31m"
+# define GREEN "\033[32m"
+# define ORANGE "\033[38;5;208m"
+# define PURPLE "\e[35m"
+# define YELLOW "\033[33m"
+# define CYAN "\033[36m"
+# define RESET "\033[0m"
 
 #endif

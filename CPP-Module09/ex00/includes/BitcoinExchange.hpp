@@ -26,10 +26,19 @@ class BitcoinExchange
 		~BitcoinExchange(void);
 		BitcoinExchange &operator=(const BitcoinExchange &other);
 
-		void readFromFile(const string &filename);
+		void	exchange(const string &filename);
+		void	extractDataToMap(const string &filename);
 
+
+		void	checkFile(const string &filename);
+		bool	checkOpenFile(std::ifstream &file);
+		bool	checkIsEmpty(std::ifstream &file);
+		bool	checkInputFirstLine(std::ifstream &file);
+
+		bool	checkDataFirstLine(std::ifstream &file);
+
+
+		void	printError(string error, std::ifstream &file);
 };
-
-
 
 #endif

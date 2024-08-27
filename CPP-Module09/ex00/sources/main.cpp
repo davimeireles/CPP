@@ -20,6 +20,6 @@ int main(int argc, char **argv)
 		std::cerr << "Usage: ./btc [filename]" << endl;
 		return (1);
 	}
-	BitcoinExchange exchange;
-	exchange.readFromFile(argv[1]);
+	BitcoinExchange bitcoin;
+	bitcoin.exchange(argv[1]);
 }
