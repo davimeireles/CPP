@@ -28,17 +28,22 @@ class BitcoinExchange
 
 		void	exchange(const string &filename);
 		void	extractDataToMap(const string &filename);
+		void	compareInputWithData(const string &filename);
+		bool	makeExchange(string date, float _amount, string dateToPrint);
 
-
-		void	checkFile(const string &filename);
-		bool	checkOpenFile(std::ifstream &file);
+		bool	checkFile(const string &filename);
 		bool	checkIsEmpty(std::ifstream &file);
 		bool	checkInputFirstLine(std::ifstream &file);
 
 		bool	checkDataFirstLine(std::ifstream &file);
+		bool	checkValidDate(string date, float _amount);
+		bool	checkPositiveAmount(float _amount);
+		bool	checkOverflowAmount(float _amount);
 
+		void	printError(string error);
+		void	trim(string &in);
 
-		void	printError(string error, std::ifstream &file);
+		string	integerToString(int value);
 };
 
 #endif

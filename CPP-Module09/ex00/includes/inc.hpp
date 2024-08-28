@@ -26,6 +26,8 @@
 # include <sstream>
 # include <map>
 # include <string>
+# include <cctype>
+# include <ranges>
 
 using std::string;
 using std::cout;

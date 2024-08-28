@@ -31,31 +31,41 @@ BitcoinExchange::~BitcoinExchange(void){}
 
 void BitcoinExchange::exchange(const string &filename)
 {
-	checkFile(filename);
-	checkFile("data.csv");
+	if (!checkFile(filename))
+		return ;
+	if (!checkFile("data.csv"))
+		return ;
 	extractDataToMap("data.csv");
+	compareInputWithData(filename);
 }
 
-void BitcoinExchange::checkFile(const string &filename)
+bool BitcoinExchange::checkFile(const string &filename)
 {
 	std::ifstream file(filename.c_str());
+	bool	err = true;
 
-	if (!checkOpenFile(file))
-		printError("Error: could not open file", file);
-	if (checkIsEmpty(file))
-		printError("Error: empty input file", file);
-	if (filename == "input.txt" && !checkInputFirstLine(file))
-		printError("Error: input first line must be \"date | value\"", file);
-	if (filename == "data.csv" && !checkDataFirstLine(file))
-		printError("Error: data first line must be \"date,exchange_rate\"", file);
-	file.close();
-}
-
-bool BitcoinExchange::checkOpenFile(std::ifstream &file)
-{
 	if (!file.is_open())
-		return (false);
-	return (true);
+	{
+		printError("Error: cannot open the file.");
+		err = false;
+	}
+	else if (checkIsEmpty(file))
+	{
+		printError("Error: empty input file");
+		err = false;
+	}
+	else if (filename == "input.txt" && !checkInputFirstLine(file))
+	{
+		printError("Error: input first line must be \"date | value\"");
+		err = false;
+	}
+	else if (filename == "data.csv" && !checkDataFirstLine(file))
+	{
+		printError("Error: data first line must be \"date,exchange_rate\"");
+		err = false;
+	}
+	file.close();
+	return (err);
 }
 
 bool BitcoinExchange::checkIsEmpty(std::ifstream &file)
@@ -97,24 +107,175 @@ void BitcoinExchange::extractDataToMap(const string &filename)
 		size_t commaPos = line.find(',');
 		if (commaPos != string::npos)
 		{
-			string firstpart = line.substr(0, commaPos);
-			string secondpart = line.substr(commaPos + 1, line.size());
+			string date = line.substr(0, commaPos);
+			string value = line.substr(commaPos + 1, line.size());
 			char* endptr;
-			float result = strtof(secondpart.c_str(), &endptr);
-			_data[firstpart] = result;
+			float result = strtof(value.c_str(), &endptr);
+			_data[date] = result;
 		}
 	}
 	dataFile.close();
-	std::map<string, float>::iterator it = _data.begin();
-	for(;it != _data.end(); ++it)
-	{
-		cout << it->first << " | " << it->second << endl;
-	}
 }
 
-void BitcoinExchange::printError(string error, std::ifstream &file)
+void BitcoinExchange::compareInputWithData(const string &filename)
+{
+	std::ifstream inputFile(filename.c_str());
+
+	string	dummy;
+	string	line;
+	getline(inputFile, dummy);
+	
+	while(getline(inputFile, line))
+	{
+		size_t	divPos = line.find('|');
+		string	date = line.substr(0, divPos);
+		string	amount = line.substr(divPos + 1, line.size());
+		trim(date);
+		trim(amount);
+		char* endptr;
+		float	_amount = strtof(amount.c_str(), &endptr);
+		if (!checkPositiveAmount(_amount))
+			cout << RED << "Error: not a positive number." << RESET << endl;
+		else if (checkOverflowAmount(_amount))
+			cout << RED << "Error: too large a number." << RESET << endl;
+		else if (!checkValidDate(date, _amount))
+			cout << RED << "Error: bad input => " << date << RESET << endl;
+	}
+	inputFile.close();
+}
+
+bool BitcoinExchange::checkValidDate(string date, float _amount)
+{
+	size_t	divPos = date.find('-');
+	size_t	secondDivPos;
+	string	year;
+	string	month;
+	string	day;
+
+	if (divPos != string::npos)
+	{
+		year = date.substr(0, divPos);
+		for (unsigned int i = 0; i < year.size(); i++)
+		{
+			if (!isdigit(year[i]))
+				return (false);
+		}
+		secondDivPos = date.find('-', divPos + 1);
+		month = date.substr(divPos + 1, (secondDivPos - 1) - divPos);
+		for (unsigned int i = 0; i < month.size(); i++)
+		{
+			if (!isdigit(month[i]))
+				return (false);
+		}
+		if (secondDivPos != string::npos)
+		{
+			day = date.substr(secondDivPos + 1, date.size() - secondDivPos);
+			for (unsigned int i = 0; i < day.size(); i++)
+			{
+				if (!isdigit(day[i]))
+					return (false);
+			}
+		}
+	}
+
+	int	_year = atoi(year.c_str());
+	int	_month = atoi(month.c_str());
+	int	_day = atoi(day.c_str());
+
+	if ((_year > 2024 || _year < 2009)
+		|| (_month < 1 || _month > 12)
+			|| (_day < 1 || _day > 31))
+		return (false);
+
+	int	old_month = _month;
+	int	old_day = _day;
+
+	string	newDate;
+	bool	condition = false;
+	while (!condition)
+	{
+		while (_day > 0 && !condition)
+		{
+			newDate = integerToString(_year) + '-';
+
+			if (_month < 10)
+				newDate = newDate + "0" + integerToString(_month);
+			else
+				newDate = newDate + integerToString(_month);
+			
+			if (_day < 10)
+				newDate = newDate + "-" + "0" + integerToString(_day);
+			else
+				newDate = newDate + "-" + integerToString(_day);
+
+			if (makeExchange(newDate, _amount, date))
+				condition = true;
+			_day--;
+			newDate = "";
+		}
+		if (_day == 0 && _month > 0 && !condition)
+		{
+			_day = old_day;
+			_month--;
+		}
+		else if (_year >= 2009 && _month == 0 && _day == 0 && !condition)
+		{
+			_day = old_day;
+			_month = old_month;
+			_year--;
+		}
+		else if (_year < 2009 && _month == 0 && _day == 0 && !condition)
+			return (false);
+	}
+	return (true);
+}
+
+string BitcoinExchange::integerToString(int value)
+{
+	std::stringstream ss;
+	ss << value;
+	return ss.str();
+}
+
+bool BitcoinExchange::makeExchange(string date, float _amount, string dateToPrint)
+{
+	std::map<string, float>::iterator it = _data.find(date);
+
+	if (it != _data.end())
+	{
+		cout << GREEN << dateToPrint << " => " << _amount << " = " << (_amount * it->second) << endl;
+		return (true);
+	}
+	return (false);
+}
+
+bool BitcoinExchange::checkPositiveAmount(float _amount)
+{
+	if (_amount < 0)
+		return (false);
+	return (true);
+}
+
+bool BitcoinExchange::checkOverflowAmount(float _amount)
+{
+	if (_amount >= 2147483648)
+		return (true);
+	return (false);
+}
+
+void BitcoinExchange::printError(string error)
 {
 	std::cerr << RED << error << endl << RESET;
-	file.close();
-	exit(EXIT_FAILURE);
+}
+
+void BitcoinExchange::trim(string &str)
+{
+	int end = str.size() - 1;
+	while(end > 0 && isspace(str[end]))
+		end--;
+	str.erase(end + 1);
+	unsigned int i = 0;
+	while(i < str.size() && isspace(str[i]))
+		i++;
+	str.erase(0, i);
 }
