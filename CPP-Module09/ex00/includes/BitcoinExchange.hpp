@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BITCOIN_EXCHANGE_HPP
-# define BITCOIN_EXCHANGE_HPP
+#pragma once
 
 # include "inc.hpp"
 
@@ -45,5 +44,3 @@ class BitcoinExchange
 
 		string	integerToString(int value);
 };
-
-#endif

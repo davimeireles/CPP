@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef INC_HPP
-# define INC_HPP
+#pragma once
 
 # include <iostream>
 # include <cstdlib>
@@ -40,5 +39,3 @@ using std::endl;
 # define YELLOW "\033[33m"
 # define CYAN "\033[36m"
 # define RESET "\033[0m"
-
-#endif
