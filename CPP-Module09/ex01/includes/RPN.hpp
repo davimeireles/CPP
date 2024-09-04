@@ -6,7 +6,7 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 10:50:21 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/08/29 10:50:21 by dmeirele         ###   ########.fr       */
+/*   Updated: 2024/09/03 19:04:57 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,13 @@
 # include "inc.hpp"
 
 void					parsing(string argument);
-void					p_error(string error);
 void					trim(string &str);
-bool					isOperator(string str);
-bool					checkFormat(string str);
+bool					isOperator(char* str);
+bool					checkFormat(char* str);
 bool					isNumber(string str);
-bool					isValidInput(string str);
+bool					isValidInput(char* str);
 void					calculate(std::vector<string> argumentVector);
-std::vector<string> 	splitString(string& argument, char delimiter);
-
+void					free_pointers(char* argCopy, char** array_ag, int i);
 
 
 /* Tests that need to fail (error msg) */

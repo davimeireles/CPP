@@ -6,15 +6,15 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 09:15:53 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/08/29 09:15:53 by dmeirele         ###   ########.fr       */
+/*   Updated: 2024/09/04 12:36:12 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/RPN.hpp"
 
-bool	isValidInput(string str)
+bool	isValidInput(char* str)
 {
-	for(size_t i = 0; i < str.size(); i++)
+	for(int i = 0; str[i]; i++)
 	{
 		if (str[i] != '-' && str[i] != '+'
 			&& str[i] != '/' && str[i] != '*'
@@ -24,9 +24,9 @@ bool	isValidInput(string str)
 	return (true);
 }
 
-bool	isOperator(string str)
+bool	isOperator(char* str)
 {
-	for(size_t i = 0; i < str.size(); i++)
+	for(int i = 0; str[i]; i++)
 	{
 		if (str[i] == '-' || str[i] == '+'
 			|| str[i] == '/' || str[i] == '*')
@@ -35,7 +35,7 @@ bool	isOperator(string str)
 	return (false);
 }
 
-bool	checkFormat(string str)
+bool	checkFormat(char* str)
 {
 	int	i = 0;
 	int countOperators = 0;
@@ -54,6 +54,8 @@ bool	checkFormat(string str)
 				i++;
 			}
 		}
+		if (!str[i])
+			break;
 		i++;
 	}
 	if (countOperators > 1)
@@ -75,45 +77,93 @@ bool	isNumber(string str)
 
 void	parsing(string argument)
 {
-	std::vector<string> argumentVector;
-	int numberCount = 0;
-	int operatorCount = 0;
-	argumentVector = splitString(argument, ' ');
+	 if (argument.empty())
+	 {
+		std::cerr << RED << "Error - Argument was empty." << RESET << endl;
+		return ;
+	 }
 
 	for (size_t i = 0; i < argument.size(); i++)
 	{
-		if (argument[i] == ' ' && argument[i + 1] == ' ')
-			p_error("Error - Invalid argument format.");
+		if ((argument[i] == ' ' && argument[i + 1] == ' ')
+			|| (argument[0] == ' ')
+			|| (argument[argument.size() - 1] == ' '))
+			{
+				std::cerr << RED << "Error - Invalid argument format." << RESET << endl;
+				return ;
+			}
 	}
-	if (argumentVector.empty())
-		p_error("Error - Argument was empty.");
-	if (argumentVector.size() < 3)
-		p_error("Error - Too few arguments.");
-	for(size_t i = 0; i < argumentVector.size(); i++)
+
+	int numberCount = 0;
+	int operatorCount = 0;
+
+	int		total_tokens = std::count(argument.begin(), argument.end(), ' ') + 1;
+	char**	array_ag = new char*[total_tokens];
+	char*	argCopy = new char[argument.length() + 1];
+	strcpy(argCopy, argument.c_str());
+
+	int i = 0;
+	char* token = std::strtok(argCopy, " ");
+	while (token && i <= total_tokens)
 	{
-		if (!isValidInput(argumentVector[i]))
-			p_error("Error - Unexpected argument.");
-		if (!checkFormat(argumentVector[i]))
-			p_error("Error - Invalid number of operators");
-		if (isNumber(argumentVector[i]))
+		array_ag[i] = new char[strlen(token) + 1];
+		strcpy(array_ag[i], token);
+		token = std::strtok(0, " ");
+		i++;
+	}
+
+	if (total_tokens < 3)
+	{
+		std::cerr << RED << "Error - Too few arguments" << RESET << endl;
+		free_pointers(argCopy, array_ag, total_tokens);
+		return ;
+	}
+	
+	for(int i = 0; i < total_tokens; i++)
+	{
+		if (!isValidInput(array_ag[i]))
+		{
+			std::cerr << RED << "Error - Unexpected argument." << RESET << endl;
+			free_pointers(argCopy, array_ag, total_tokens);
+			return ;
+		}
+		if (!checkFormat(array_ag[i]))
+		{
+			std::cerr << RED << "Error - Invalid number of operators" << RESET << endl;
+			free_pointers(argCopy, array_ag, total_tokens);
+			return ;
+		}
+		if (isNumber(array_ag[i]))
 			numberCount++;
-		if (isOperator(argumentVector[i]))
+		if (isOperator(array_ag[i]))
 			operatorCount++;
 	}
+	
 	if (operatorCount != (numberCount - 1))
-		p_error("Error - Invalid argument content.");
-	if (!isNumber(argumentVector[0]) || !isNumber(argumentVector[1]))
-		p_error("Error - Argument 1 and 2 need to be number.");
-	if (!isOperator(argumentVector[2]))
-		p_error("Error - Argument 3 need to be some operator.");
+	{
+		std::cerr << RED << "Error - Invalid argument content." << RESET << endl;
+		free_pointers(argCopy, array_ag, total_tokens);
+		return ;
+	}
 
-/*	for (size_t i = 0; i < argumentVector.size(); i++)
-		cout << argumentVector[i] << endl;*/
-
-	calculate(argumentVector);
+/* 	if (!isNumber(array_ag[0]) || !isNumber(array_ag[1]))
+	{
+		std::cerr << RED << "Error - Argument 1 and 2 need to be number." << RESET << endl;
+		free_pointers(argCopy, array_ag, total_tokens);
+		return ;
+	}
+	
+	if (!isOperator(array_ag[2]))
+	{
+		std::cerr << RED << "Error - Argument 3 need to be some operator." << RESET << endl;
+		free_pointers(argCopy, array_ag, total_tokens);
+		return ;
+	} */
+ 
+	free_pointers(argCopy, array_ag, i);
 }
 
-void	calculate(std::vector<string> argumentVector)
+/* void	calculate(std::vector<string> argumentVector)
 {
 	std::stack<double> numbersStack;
 	double				value = 0;
@@ -128,24 +178,25 @@ void	calculate(std::vector<string> argumentVector)
 	}
 	while (!numbersStack.empty())
 	{
-		cout << numbersStack.top() << endl;
+		// cout << numbersStack.top() << endl;
 		numbersStack.pop();
 	}
-}
+} */
 
-std::vector<string> splitString(string& argument, char delimiter)
+/* char** split(string argument)
 {
-	string token;
-	std::vector<string> tokens;
-	std::istringstream tokenStream(argument);
+	int		tokenCount = 0;
+	char	**splitted;
+	char*	token = strtok((char *)(argument.c_str()), " ");
 
-	while (std::getline(tokenStream, token, delimiter))
-	{
-		if (!token.empty())
-			tokens.push_back(token);
+	while (token != nullptr && tokenCount < MAX_TOKENS) {
+		strcpy(tokens[tokenCount], token);
+		tokenCount++;
+		token = strtok(nullptr, " ");
 	}
-	return (tokens);
-}
+
+	delete[] inputCopy;
+} */
 
 void trim(string &str)
 {
@@ -159,9 +210,10 @@ void trim(string &str)
 	str.erase(0, i);
 }
 
-void	p_error(string error)
+void	free_pointers(char* argCopy, char** array_ag, int i)
 {
-	std::cerr << RED << error << RESET << endl;
-	exit(EXIT_FAILURE);
+	for (int j = 0; j < i; j++)
+		delete[] array_ag[j];
+	delete[] array_ag;
+	delete[] argCopy;
 }
-
