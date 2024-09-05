@@ -6,7 +6,7 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 10:50:21 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/09/03 19:04:57 by dmeirele         ###   ########.fr       */
+/*   Updated: 2024/09/04 21:45:20 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,11 @@
 # include "inc.hpp"
 
 void					parsing(string argument);
-void					trim(string &str);
 bool					isOperator(char* str);
 bool					checkFormat(char* str);
-bool					isNumber(string str);
+bool					isNumber(char* str);
 bool					isValidInput(char* str);
-void					calculate(std::vector<string> argumentVector);
+bool					calculate(char** array_arg);
 void					free_pointers(char* argCopy, char** array_ag, int i);
 
 

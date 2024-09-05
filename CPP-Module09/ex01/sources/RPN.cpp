@@ -6,7 +6,7 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 09:15:53 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/09/04 12:36:12 by dmeirele         ###   ########.fr       */
+/*   Updated: 2024/09/05 10:08:10 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ bool	checkFormat(char* str)
 	return (true);
 }
 
-bool	isNumber(string str)
+bool	isNumber(char* str)
 {
 	if (std::isdigit(str[0]))
 		return (true);
@@ -112,6 +112,10 @@ void	parsing(string argument)
 		i++;
 	}
 
+	array_ag[total_tokens] = 0;
+	for(int i = 0 ; array_ag[i] ; i++)
+		cout << array_ag[i] << endl ;
+
 	if (total_tokens < 3)
 	{
 		std::cerr << RED << "Error - Too few arguments" << RESET << endl;
@@ -146,73 +150,68 @@ void	parsing(string argument)
 		return ;
 	}
 
-/* 	if (!isNumber(array_ag[0]) || !isNumber(array_ag[1]))
+	delete[] argCopy;
+
+	if (!calculate(array_ag))
 	{
-		std::cerr << RED << "Error - Argument 1 and 2 need to be number." << RESET << endl;
-		free_pointers(argCopy, array_ag, total_tokens);
-		return ;
+		for (int j = 0; array_ag[j]; j++)
+			delete[] array_ag[j];
+		delete[] array_ag;
 	}
-	
-	if (!isOperator(array_ag[2]))
+	else
 	{
-		std::cerr << RED << "Error - Argument 3 need to be some operator." << RESET << endl;
-		free_pointers(argCopy, array_ag, total_tokens);
-		return ;
-	} */
- 
-	free_pointers(argCopy, array_ag, i);
+		for (int j = 0; array_ag[j]; j++)
+			delete[] array_ag[j];
+		delete[] array_ag;
+	}
+	return ;
 }
 
-/* void	calculate(std::vector<string> argumentVector)
+bool	calculate(char** array_arg)
 {
-	std::stack<double> numbersStack;
-	double				value = 0;
+	std::stack<int> stack_numbers;
+	int	first = 0;
+	int	second = 0;
+	int result = 0;
+	int	i = 0;
 
-	for (size_t i = 0; i < argumentVector.size(); i++)
+	while (array_arg[i])
 	{
-		if (isNumber(argumentVector[i]))
+		if (isNumber(array_arg[i]))
+			stack_numbers.push(atoi(array_arg[i]));
+		else if (isOperator(array_arg[i]))
 		{
-			value = std::strtod(argumentVector[i].c_str(), 0);
-			numbersStack.push(value);
+			first = stack_numbers.top();
+			stack_numbers.pop();
+			second = stack_numbers.top();
+			stack_numbers.pop();
+
+			if (!strcmp(array_arg[i], "-"))
+				result = second - first;
+			else if (!strcmp(array_arg[i], "+"))
+				result = second + first;
+			else if (!strcmp(array_arg[i], "*"))
+				result = second + first;
+			else if (!strcmp(array_arg[i], "/"))
+			{
+				if (first == 0)
+				{
+					std::cerr << RED << "Error - Invalid division by zero." << RESET << endl;
+					return (false);
+				}
+				result = second / first;
+			}
+			stack_numbers.push(result);
 		}
-	}
-	while (!numbersStack.empty())
-	{
-		// cout << numbersStack.top() << endl;
-		numbersStack.pop();
-	}
-} */
-
-/* char** split(string argument)
-{
-	int		tokenCount = 0;
-	char	**splitted;
-	char*	token = strtok((char *)(argument.c_str()), " ");
-
-	while (token != nullptr && tokenCount < MAX_TOKENS) {
-		strcpy(tokens[tokenCount], token);
-		tokenCount++;
-		token = strtok(nullptr, " ");
-	}
-
-	delete[] inputCopy;
-} */
-
-void trim(string &str)
-{
-	int end = str.size() - 1;
-	while(end > 0 && isspace(str[end]))
-		end--;
-	str.erase(end + 1);
-	unsigned int i = 0;
-	while(i < str.size() && isspace(str[i]))
 		i++;
-	str.erase(0, i);
+	}
+	cout << "The result is " << CYAN << result << endl;
+	return (true);
 }
 
 void	free_pointers(char* argCopy, char** array_ag, int i)
 {
-	for (int j = 0; j < i; j++)
+	for (int j = 0; j <= i; j++)
 		delete[] array_ag[j];
 	delete[] array_ag;
 	delete[] argCopy;
