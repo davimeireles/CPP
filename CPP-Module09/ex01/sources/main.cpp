@@ -15,7 +15,7 @@
 int	main(int argc, char *argv[])
 {
 	if (argc != 2)
-		std::cerr << RED << "error" << RESET << endl;
-		// p_error("Error - usage: ./RPN \"expression\".", 1, 0, 0, 0);
-	parsing(argv[1]);
+		std::cerr << RED << "Error\nUsage: ./RPN \"expression\"" << RESET << endl;
+	else
+		parsing(argv[1]);
 }

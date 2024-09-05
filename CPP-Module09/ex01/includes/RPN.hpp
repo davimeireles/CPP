@@ -14,22 +14,19 @@
 
 # include "inc.hpp"
 
-void					parsing(string argument);
-bool					isOperator(char* str);
-bool					checkFormat(char* str);
-bool					isNumber(char* str);
-bool					isValidInput(char* str);
-bool					calculate(char** array_arg);
-void					free_pointers(char* argCopy, char** array_ag, int i);
+void	parsing(string argument);
+bool	checkWhiteSpaces(string str);
+bool	checkInput(string str);
+bool	checkFormat(string str);
+bool	isNumber(string str);
+bool	calculate(std::stack<int>& stack_numbers, string op);
 
 
 /* Tests that need to fail (error msg) */
 /*
  * ./RPN ""
  * ./RPN "      "
- * ./RPN "1"
- * ./RPN " 1 2 "
- * ./RPN "1 2  "
+ * ./RPN " 1 2"
  * ./RPN "     1     2    "
  * ./RPN " - 1 2 "
  * ./RPN " - - 1 2 "

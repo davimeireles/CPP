@@ -12,7 +12,7 @@
 
 #include "../includes/RPN.hpp"
 
-bool	isValidInput(char* str)
+bool	checkInput(string str)
 {
 	for(int i = 0; str[i]; i++)
 	{
@@ -24,18 +24,7 @@ bool	isValidInput(char* str)
 	return (true);
 }
 
-bool	isOperator(char* str)
-{
-	for(int i = 0; str[i]; i++)
-	{
-		if (str[i] == '-' || str[i] == '+'
-			|| str[i] == '/' || str[i] == '*')
-			return(true);
-	}
-	return (false);
-}
-
-bool	checkFormat(char* str)
+bool	checkFormat(string str)
 {
 	int	i = 0;
 	int countOperators = 0;
@@ -63,7 +52,7 @@ bool	checkFormat(char* str)
 	return (true);
 }
 
-bool	isNumber(char* str)
+bool	isNumber(string str)
 {
 	if (std::isdigit(str[0]))
 		return (true);
@@ -75,144 +64,84 @@ bool	isNumber(char* str)
 	return (false);
 }
 
-void	parsing(string argument)
+bool	checkWhiteSpaces(string str)
 {
-	 if (argument.empty())
-	 {
-		std::cerr << RED << "Error - Argument was empty." << RESET << endl;
-		return ;
-	 }
-
-	for (size_t i = 0; i < argument.size(); i++)
+	for (string::iterator it = str.begin(); it != str.end(); ++it)
 	{
-		if ((argument[i] == ' ' && argument[i + 1] == ' ')
-			|| (argument[0] == ' ')
-			|| (argument[argument.size() - 1] == ' '))
-			{
-				std::cerr << RED << "Error - Invalid argument format." << RESET << endl;
-				return ;
-			}
+		if (!std::isspace(static_cast<unsigned char>(*it)))
+			return (false);
 	}
-
-	int numberCount = 0;
-	int operatorCount = 0;
-
-	int		total_tokens = std::count(argument.begin(), argument.end(), ' ') + 1;
-	char**	array_ag = new char*[total_tokens];
-	char*	argCopy = new char[argument.length() + 1];
-	strcpy(argCopy, argument.c_str());
-
-	int i = 0;
-	char* token = std::strtok(argCopy, " ");
-	while (token && i <= total_tokens)
-	{
-		array_ag[i] = new char[strlen(token) + 1];
-		strcpy(array_ag[i], token);
-		token = std::strtok(0, " ");
-		i++;
-	}
-
-	array_ag[total_tokens] = 0;
-	for(int i = 0 ; array_ag[i] ; i++)
-		cout << array_ag[i] << endl ;
-
-	if (total_tokens < 3)
-	{
-		std::cerr << RED << "Error - Too few arguments" << RESET << endl;
-		free_pointers(argCopy, array_ag, total_tokens);
-		return ;
-	}
-	
-	for(int i = 0; i < total_tokens; i++)
-	{
-		if (!isValidInput(array_ag[i]))
-		{
-			std::cerr << RED << "Error - Unexpected argument." << RESET << endl;
-			free_pointers(argCopy, array_ag, total_tokens);
-			return ;
-		}
-		if (!checkFormat(array_ag[i]))
-		{
-			std::cerr << RED << "Error - Invalid number of operators" << RESET << endl;
-			free_pointers(argCopy, array_ag, total_tokens);
-			return ;
-		}
-		if (isNumber(array_ag[i]))
-			numberCount++;
-		if (isOperator(array_ag[i]))
-			operatorCount++;
-	}
-	
-	if (operatorCount != (numberCount - 1))
-	{
-		std::cerr << RED << "Error - Invalid argument content." << RESET << endl;
-		free_pointers(argCopy, array_ag, total_tokens);
-		return ;
-	}
-
-	delete[] argCopy;
-
-	if (!calculate(array_ag))
-	{
-		for (int j = 0; array_ag[j]; j++)
-			delete[] array_ag[j];
-		delete[] array_ag;
-	}
-	else
-	{
-		for (int j = 0; array_ag[j]; j++)
-			delete[] array_ag[j];
-		delete[] array_ag;
-	}
-	return ;
-}
-
-bool	calculate(char** array_arg)
-{
-	std::stack<int> stack_numbers;
-	int	first = 0;
-	int	second = 0;
-	int result = 0;
-	int	i = 0;
-
-	while (array_arg[i])
-	{
-		if (isNumber(array_arg[i]))
-			stack_numbers.push(atoi(array_arg[i]));
-		else if (isOperator(array_arg[i]))
-		{
-			first = stack_numbers.top();
-			stack_numbers.pop();
-			second = stack_numbers.top();
-			stack_numbers.pop();
-
-			if (!strcmp(array_arg[i], "-"))
-				result = second - first;
-			else if (!strcmp(array_arg[i], "+"))
-				result = second + first;
-			else if (!strcmp(array_arg[i], "*"))
-				result = second + first;
-			else if (!strcmp(array_arg[i], "/"))
-			{
-				if (first == 0)
-				{
-					std::cerr << RED << "Error - Invalid division by zero." << RESET << endl;
-					return (false);
-				}
-				result = second / first;
-			}
-			stack_numbers.push(result);
-		}
-		i++;
-	}
-	cout << "The result is " << CYAN << result << endl;
 	return (true);
 }
 
-void	free_pointers(char* argCopy, char** array_ag, int i)
+void	parsing(string argument)
 {
-	for (int j = 0; j <= i; j++)
-		delete[] array_ag[j];
-	delete[] array_ag;
-	delete[] argCopy;
+	std::istringstream str(argument);
+	std::stack<int> stack_numbers;
+	string	token;
+	int count_numbers = 0;
+	int	count_operators = 0;
+
+	if (argument.empty() || checkWhiteSpaces(argument))
+	{
+		std::cerr << RED << "Error\nInvalid Input." << RESET << endl;
+		return;
+	}
+
+	while (str >> token)
+	{
+		if (!checkInput(token) || !checkFormat(token)) {
+			std::cerr << RED << "Error\nInvalid Input." << RESET << endl;
+			return;
+		}
+		if (isNumber(token))
+		{
+			stack_numbers.push(std::atoi(token.c_str()));
+			count_numbers++;
+		}
+		else
+		{
+			count_operators++;
+			if (!calculate(stack_numbers, token))
+			{
+				std::cerr << RED << "Error\nInvalid Input." << RESET << endl;
+				return;
+			}
+		}
+	}
+	if ((count_numbers - 1) != count_operators)
+	{
+		std::cerr << RED << "Error\nInvalid Input." << RESET << endl;
+		return;
+	}
+	cout << "Result = " << CYAN << stack_numbers.top() << RESET << endl;
+}
+
+bool	calculate(std::stack<int>& stack_numbers, string op)
+{
+	if (stack_numbers.size() != 2)
+		return (false);
+
+	int	first = stack_numbers.top();
+	stack_numbers.pop();
+	int second = stack_numbers.top();
+	stack_numbers.pop();
+
+	int result;
+
+	if (op == "+")
+		result = second + first;
+	else if (op == "-")
+		result = second - first;
+	else if (op == "*")
+		result = second * first;
+	else if (op == "/")
+	{
+		if (first == 0)
+			return (false);
+		result = second / first;
+	}
+
+	stack_numbers.push(result);
+	return (true);
 }
