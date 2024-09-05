@@ -6,7 +6,7 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 09:15:53 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/09/05 10:08:10 by dmeirele         ###   ########.fr       */
+/*   Updated: 2024/09/05 22:34:03 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,6 @@ void	parsing(string argument)
 
 bool	calculate(std::stack<int>& stack_numbers, string op)
 {
-	if (stack_numbers.size() != 2)
-		return (false);
 
 	int	first = stack_numbers.top();
 	stack_numbers.pop();
