@@ -31,29 +31,28 @@ void	PmergeMe(char** argv)
 
 	cout << "Before: ";
 	for (size_t i = 0; i < num_vector.size(); i++) {
-		cout << num_vector[i] << " ";
+		cout << RED << num_vector[i] << " ";
 	}
-	cout << endl;
+	cout << RESET << endl;
 
 	clock_t start_vector = clock();
 	mergeInsertionSortVector(num_vector, 0, num_vector.size() - 1);
 	clock_t end_vector = clock();
 
 	std::cout << "After:  ";
-	for (size_t i = 0; i < num_vector.size(); i++) {
-		std::cout << num_vector[i] << " ";
-	}
-	std::cout << std::endl;
+	for (size_t i = 0; i < num_vector.size(); i++)
+		std::cout << GREEN << num_vector[i] << " ";
+	std::cout << RESET << std::endl;
 
 	double time_taken_vector = double(end_vector - start_vector) / CLOCKS_PER_SEC * 1000000.0;
-	cout << "Time to process a range of " << num_vector.size() << " elements with std::vector : " << time_taken_vector << " us" << endl;
+	cout << CYAN << "Time to process a range of " << num_vector.size() << " elements with std::vector : " << time_taken_vector << " us" << RESET <<endl;
 
 	cout << endl;
 
 	std::cout << "Before: ";
 	for (std::list<int>::const_iterator it = num_list.begin(); it != num_list.end(); ++it)
-		std::cout << *it << " ";
-	std::cout << std::endl;
+		std::cout << RED << *it << " ";
+	std::cout << RESET << std::endl;
 
 	clock_t start_list = clock();
 	mergeInsertionSortList(num_list);
@@ -61,12 +60,11 @@ void	PmergeMe(char** argv)
 
 	std::cout << "After:  ";
 	for (std::list<int>::const_iterator it = num_list.begin(); it != num_list.end(); ++it)
-		std::cout << *it << " ";
-	std::cout << std::endl;
+		std::cout << GREEN << *it << " ";
+	std::cout << RESET << std::endl;
 
 	double time_taken_list = double(end_list - start_list) / CLOCKS_PER_SEC * 1000000.0;
-	std::cout << "Time to process a range of " << num_list.size() 
-				<< " elements with std::list : " << time_taken_list << " us" << std::endl;
+	std::cout << CYAN << "Time to process a range of " << num_list.size() << " elements with std::list : " << time_taken_list << " us" << RESET << std::endl;
 }
 
 bool	parsing(char** argv)
