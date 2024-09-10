@@ -54,13 +54,12 @@ bool	checkFormat(string str)
 
 bool	isNumber(string str)
 {
-	if (std::isdigit(str[0]))
+	if (std::isdigit(static_cast<int>(str[0])))
 		return (true);
-	if ((str[0] == '-' || str[0] == '+'))
-	{
-		if (str[1] && std::isdigit(str[1]))
-			return (true);
-	}
+	if ((str[0] != '-' && str[0] != '+'))
+		return (false);
+	if (str[1] && std::isdigit(str[1]))
+		return (true);
 	return (false);
 }
 
@@ -88,29 +87,26 @@ void	parsing(string argument)
 		std::cerr << RED << "Error\nInvalid Input." << RESET << endl;
 		return;
 	}
-
 	while (str >> token)
 	{
 		if (!checkInput(token) || !checkFormat(token)) {
 			std::cerr << RED << "Error\nInvalid Input." << RESET << endl;
 			return;
 		}
-		if (isNumber(token))
-		{
+		if (isNumber(token)) {
 			number = std::atoi(token.c_str());
-			if (number >= 10)
-			{
+			if (number >= 10) {
 				std::cerr << RED << "Error\nInvalid Input." << RESET << endl;
 				return;
 			}
 			stack_numbers.push(std::atoi(token.c_str()));
 			count_numbers++;
-		}
-		else
-		{
+		} else {
 			count_operators++;
-			if (!calculate(stack_numbers, token))
-			{
+			if (stack_numbers.size() < 2) {
+				std::cerr << RED << "Error\nInvalid Input." << RESET << endl;
+				return;
+			} else if (!calculate(stack_numbers, token)) {
 				std::cerr << RED << "Error\nInvalid Input." << RESET << endl;
 				return;
 			}
@@ -126,7 +122,8 @@ void	parsing(string argument)
 
 bool	calculate(std::stack<int>& stack_numbers, string op)
 {
-
+	if (stack_numbers.empty())
+		return (false);
 	int	first = stack_numbers.top();
 	stack_numbers.pop();
 	int second = stack_numbers.top();
