@@ -19,14 +19,9 @@ bool	parsing(char** argv);
 bool	checkFormat(string str);
 bool	isNumber(string str);
 
-
-
-
-
 void	mergeInsertionSortVector(std::vector<int>& num_vector, int left, int right);
 void	insertionSortVector(std::vector<int>& num_vector, int left, int right);
 void	mergeVector(std::vector<int>& num_vector, int left, int mid, int right);
-
 
 void mergeInsertionSortList(std::list<int>& num_list);
 void mergeList(std::list<int>& left, std::list<int>& right, std::list<int>& result);
