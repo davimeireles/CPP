@@ -12,6 +12,45 @@
 
 #include "../includes/PmergeMe.hpp"
 
+bool	isNumber(string str)
+{
+	if (std::isdigit(static_cast<int>(str[0])))
+		return (true);
+	if ((str[0] != '-' && str[0] != '+'))
+		return (false);
+	if (str[1] && std::isdigit(str[1]))
+		return (true);
+	return (false);
+}
+
+bool	checkFormat(string str)
+{
+	int	i = 0;
+	int countOperators = 0;
+	while (str[i])
+	{
+		if (str[i] == '-' || str[i] == '+'
+			|| str[i] == '/' || str[i] == '*')
+			countOperators++;
+		if (std::isdigit(str[i]))
+		{
+			while (str[i])
+			{
+				if (str[i] == '-' || str[i] == '+'
+					|| str[i] == '/' || str[i] == '*')
+					return (false);
+				i++;
+			}
+		}
+		if (!str[i])
+			break;
+		i++;
+	}
+	if (countOperators > 1)
+		return (false);
+	return (true);
+}
+
 void	PmergeMe(char** argv)
 {
 	std::vector<int> num_vector;
@@ -69,12 +108,24 @@ void	PmergeMe(char** argv)
 
 bool	parsing(char** argv)
 {
-	int	num;
+	double	num;
+
+	string for_validation;
 
 	for (int i = 1; argv[i]; i++)
 	{
-		num = std::atoi(argv[i]);
-		if (num < 0)
+		for_validation = argv[i];
+		if (!checkFormat(argv[i]))
+			return (false);
+		if (!isNumber(argv[i]))
+			return (false);
+		for (size_t i = 0; i < for_validation.size(); i++)
+		{
+			if (!std::isdigit(for_validation[i]))
+				return (false);
+		}
+		num = std::strtod(argv[i], 0);
+		if (num < 0 || num > INT_MAX)
 			return (false);
 	}
 

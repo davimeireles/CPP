@@ -16,6 +16,8 @@
 
 void	PmergeMe(char** argv);
 bool	parsing(char** argv);
+bool	checkFormat(string str);
+bool	isNumber(string str);
 
 
 
