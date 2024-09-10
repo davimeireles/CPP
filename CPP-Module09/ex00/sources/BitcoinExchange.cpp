@@ -54,11 +54,6 @@ bool BitcoinExchange::checkFile(const string &filename)
 		printError("Error: empty input file");
 		err = false;
 	}
-	else if (filename == "input.txt" && !checkInputFirstLine(file))
-	{
-		printError("Error: input first line must be \"date | value\"");
-		err = false;
-	}
 	else if (filename == "data.csv" && !checkDataFirstLine(file))
 	{
 		printError("Error: data first line must be \"date,exchange_rate\"");
@@ -71,16 +66,6 @@ bool BitcoinExchange::checkFile(const string &filename)
 bool BitcoinExchange::checkIsEmpty(std::ifstream &file)
 {
 	return (file.peek() == std::ifstream::traits_type::eof());
-}
-
-bool BitcoinExchange::checkInputFirstLine(std::ifstream &file)
-{
-	string line;
-
-	getline(file, line);
-	if (line != "date | value")
-		return (false);
-	return (true);
 }
 
 bool BitcoinExchange::checkDataFirstLine(std::ifstream &file)
@@ -123,8 +108,13 @@ void BitcoinExchange::compareInputWithData(const string &filename)
 
 	string	dummy;
 	string	line;
+
 	getline(inputFile, dummy);
-	
+	if (dummy != "date | value")
+	{
+		cout << RED << "Error: first line must be [date | value]" << RESET << endl;
+		return ;
+	}
 	while(getline(inputFile, line))
 	{
 		size_t	divPos = line.find('|');
@@ -136,6 +126,8 @@ void BitcoinExchange::compareInputWithData(const string &filename)
 		float	_amount = strtof(amount.c_str(), &endptr);
 		if (!checkPositiveAmount(_amount))
 			cout << RED << "Error: not a positive number." << RESET << endl;
+		else if (!isNumber(amount) || !checkFormat(amount))
+			cout << RED << "Error: bad input => " << RESET << endl;
 		else if (checkOverflowAmount(_amount))
 			cout << RED << "Error: too large a number." << RESET << endl;
 		else if (!checkValidDate(date, _amount))
@@ -243,7 +235,7 @@ bool BitcoinExchange::makeExchange(string date, float _amount, string dateToPrin
 
 	if (it != _data.end())
 	{
-		cout << GREEN << dateToPrint << " => " << _amount << " = " << (_amount * it->second) << endl;
+		cout << GREEN << dateToPrint << " => " << _amount << " = " << (_amount * it->second) << RESET << endl;
 		return (true);
 	}
 	return (false);
@@ -258,7 +250,9 @@ bool BitcoinExchange::checkPositiveAmount(float _amount)
 
 bool BitcoinExchange::checkOverflowAmount(float _amount)
 {
-	if (_amount >= 2147483648)
+	if (_amount >= 1000)
+		return (true);
+	if (_amount <= INT_MIN)
 		return (true);
 	return (false);
 }
@@ -278,4 +272,44 @@ void BitcoinExchange::trim(string &str)
 	while(i < str.size() && isspace(str[i]))
 		i++;
 	str.erase(0, i);
+}
+
+bool	BitcoinExchange::isNumber(string str)
+{
+	if (std::isdigit(str[0]))
+		return (true);
+	if ((str[0] == '-' || str[0] == '+'))
+	{
+		if (str[1] && std::isdigit(str[1]))
+			return (true);
+	}
+	return (false);
+}
+
+bool	BitcoinExchange::checkFormat(string str)
+{
+	int	i = 0;
+	int countOperators = 0;
+	while (str[i])
+	{
+		if (str[i] == '-' || str[i] == '+'
+			|| str[i] == '/' || str[i] == '*')
+			countOperators++;
+		if (std::isdigit(str[i]))
+		{
+			while (str[i])
+			{
+				if (str[i] == '-' || str[i] == '+'
+					|| str[i] == '/' || str[i] == '*')
+					return (false);
+				i++;
+			}
+		}
+		if (!str[i])
+			break;
+		i++;
+	}
+	if (countOperators > 1)
+		return (false);
+	return (true);
 }

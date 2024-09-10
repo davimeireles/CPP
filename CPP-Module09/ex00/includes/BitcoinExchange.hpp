@@ -32,9 +32,10 @@ class BitcoinExchange
 
 		bool	checkFile(const string &filename);
 		bool	checkIsEmpty(std::ifstream &file);
-		bool	checkInputFirstLine(std::ifstream &file);
+		bool	isNumber(string str);
+		bool	checkFormat(string str);
 
-		bool	checkDataFirstLine(std::ifstream &file);
+	bool	checkDataFirstLine(std::ifstream &file);
 		bool	checkValidDate(string date, float _amount);
 		bool	checkPositiveAmount(float _amount);
 		bool	checkOverflowAmount(float _amount);
