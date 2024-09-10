@@ -81,6 +81,7 @@ void	parsing(string argument)
 	string	token;
 	int count_numbers = 0;
 	int	count_operators = 0;
+	int number = 0;
 
 	if (argument.empty() || checkWhiteSpaces(argument))
 	{
@@ -96,6 +97,12 @@ void	parsing(string argument)
 		}
 		if (isNumber(token))
 		{
+			number = std::atoi(token.c_str());
+			if (number >= 10)
+			{
+				std::cerr << RED << "Error\nInvalid Input." << RESET << endl;
+				return;
+			}
 			stack_numbers.push(std::atoi(token.c_str()));
 			count_numbers++;
 		}

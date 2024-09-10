@@ -20,24 +20,3 @@ bool	checkInput(string str);
 bool	checkFormat(string str);
 bool	isNumber(string str);
 bool	calculate(std::stack<int>& stack_numbers, string op);
-
-
-/* Tests that need to fail (error msg) */
-/*
- * ./RPN ""
- * ./RPN "      "
- * ./RPN " 1 2"
- * ./RPN "     1     2    "
- * ./RPN " - 1 2 "
- * ./RPN " - - 1 2 "
- * ./RPN "1 1 -2 - 2 * 3a +"
- * ./RPN "1 - 1 -2 - 2 * 3 +"
- * ./RPN "1 1 ---------2 - 2 * 3 +"
- * ./RPN "1 1 2------- - 2 * 3 +"
- * ./RPN "1 1 2 ------ 2 * 3 +"
- * ./RPN "1 1 2 +/-* 2 * 3 + "
- * ./RPN "1 -1          +         2 * 3 +"
- *
- * */
-
-
