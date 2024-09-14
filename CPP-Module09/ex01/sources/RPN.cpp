@@ -6,7 +6,7 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 09:15:53 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/09/05 22:34:03 by dmeirele         ###   ########.fr       */
+/*   Updated: 2024/09/15 00:29:10 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,12 @@ void	parsing(string argument)
 		}
 		if (isNumber(token)) {
 			number = std::atoi(token.c_str());
+			string	check_overflow = integerToString(number);
+			if (token != check_overflow)
+			{
+				std::cerr << RED << "Error\nInvalid Input." << RESET << endl;
+				return;
+			}
 			if (number >= 10) {
 				std::cerr << RED << "Error\nInvalid Input." << RESET << endl;
 				return;
@@ -129,7 +135,7 @@ bool	calculate(std::stack<int>& stack_numbers, string op)
 	int second = stack_numbers.top();
 	stack_numbers.pop();
 
-	int result;
+	double result;
 
 	if (op == "+")
 		result = second + first;
@@ -146,4 +152,11 @@ bool	calculate(std::stack<int>& stack_numbers, string op)
 
 	stack_numbers.push(result);
 	return (true);
+}
+
+string integerToString(int value)
+{
+	std::stringstream ss;
+	ss << value;
+	return ss.str();
 }

@@ -6,7 +6,7 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 08:33:42 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/09/14 09:58:32 by dmeirele         ###   ########.fr       */
+/*   Updated: 2024/09/15 00:08:47 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,13 +179,14 @@ bool BitcoinExchange::checkValidDate(string date, float _amount)
 			|| (_day < 1 || _day > 31))
 		return (false);
 
+	if (_month == 2 && _day > 29)
+		return (false);
+
 	std::map<std::string, float>::iterator current;
 	std::map<std::string, float>::iterator previous;
 
-	if (checkLeapYear(_year) && _month == 2 && _day > 29)
-		_day = 29;
-	else if (!checkLeapYear(_year) && _month == 2 && _day > 28)
-		_day = 28;
+	if (!checkLeapYear(_year) && _month == 2 && _day > 28)
+		return (false);
 
 	std::string adjustedDate = date.substr(0, 8) + (_day < 10 ? "0" : "") + integerToString(_day);
 
