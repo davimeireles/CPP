@@ -6,7 +6,7 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 08:48:34 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/08/05 08:50:59 by dmeirele         ###   ########.fr       */
+/*   Updated: 2024/09/14 09:34:49 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,9 @@ class BitcoinExchange
 		bool	isNumber(string str);
 		bool	checkFormat(string str);
 
-	bool	checkDataFirstLine(std::ifstream &file);
+		bool	checkDataFirstLine(std::ifstream &file);
 		bool	checkValidDate(string date, float _amount);
+		bool	checkLeapYear(int	year);
 		bool	checkPositiveAmount(float _amount);
 		bool	checkOverflowAmount(float _amount);
 

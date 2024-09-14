@@ -6,7 +6,7 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 08:33:42 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/08/05 09:19:03 by dmeirele         ###   ########.fr       */
+/*   Updated: 2024/09/14 09:58:32 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void BitcoinExchange::compareInputWithData(const string &filename)
 		if (!checkPositiveAmount(_amount))
 			cout << RED << "Error: not a positive number." << RESET << endl;
 		else if (!isNumber(amount) || !checkFormat(amount))
-			cout << RED << "Error: bad input => " << RESET << endl;
+			cout << RED << "Error: bad input => " << date << RESET << endl;
 		else if (checkOverflowAmount(_amount))
 			cout << RED << "Error: too large a number." << RESET << endl;
 		else if (!checkValidDate(date, _amount))
@@ -179,47 +179,47 @@ bool BitcoinExchange::checkValidDate(string date, float _amount)
 			|| (_day < 1 || _day > 31))
 		return (false);
 
-	int	old_month = _month;
-	int	old_day = _day;
+	std::map<std::string, float>::iterator current;
+	std::map<std::string, float>::iterator previous;
 
-	string	newDate;
-	bool	condition = false;
-	while (!condition)
+	if (checkLeapYear(_year) && _month == 2 && _day > 29)
+		_day = 29;
+	else if (!checkLeapYear(_year) && _month == 2 && _day > 28)
+		_day = 28;
+
+	std::string adjustedDate = date.substr(0, 8) + (_day < 10 ? "0" : "") + integerToString(_day);
+
+	if (adjustedDate > _data.rbegin()->first)
 	{
-		while (_day > 0 && !condition)
-		{
-			newDate = integerToString(_year) + '-';
-
-			if (_month < 10)
-				newDate = newDate + "0" + integerToString(_month);
-			else
-				newDate = newDate + integerToString(_month);
-			
-			if (_day < 10)
-				newDate = newDate + "-" + "0" + integerToString(_day);
-			else
-				newDate = newDate + "-" + integerToString(_day);
-
-			if (makeExchange(newDate, _amount, date))
-				condition = true;
-			_day--;
-			newDate = "";
-		}
-		if (_day == 0 && _month > 0 && !condition)
-		{
-			_day = old_day;
-			_month--;
-		}
-		else if (_year >= 2009 && _month == 0 && _day == 0 && !condition)
-		{
-			_day = old_day;
-			_month = old_month;
-			_year--;
-		}
-		else if (_year < 2009 && _month == 0 && _day == 0 && !condition)
-			return (false);
+		makeExchange(_data.rbegin()->first, _amount, adjustedDate);
+		return true;
 	}
-	return (true);
+
+	previous = _data.begin();
+	current = _data.begin();
+	current++;
+	while (current != _data.end())
+	{
+		if (current->first > adjustedDate)
+		{
+			makeExchange(previous->first, _amount, date);
+			return (true);
+		}
+		previous = current;
+		++current;
+	}
+	return (false);
+}
+
+bool	BitcoinExchange::checkLeapYear(int	year)
+{
+	if (year % 4 != 0)
+		return false;
+	if (year % 100 != 0)
+		return true;
+	if (year % 400 != 0)
+		return false;
+	return true;
 }
 
 string BitcoinExchange::integerToString(int value)
@@ -250,7 +250,7 @@ bool BitcoinExchange::checkPositiveAmount(float _amount)
 
 bool BitcoinExchange::checkOverflowAmount(float _amount)
 {
-	if (_amount >= 1000)
+	if (_amount > 1000)
 		return (true);
 	if (_amount <= INT_MIN)
 		return (true);
@@ -289,27 +289,16 @@ bool	BitcoinExchange::isNumber(string str)
 bool	BitcoinExchange::checkFormat(string str)
 {
 	int	i = 0;
-	int countOperators = 0;
+	int countDots = 0;
 	while (str[i])
 	{
-		if (str[i] == '-' || str[i] == '+'
-			|| str[i] == '/' || str[i] == '*')
-			countOperators++;
-		if (std::isdigit(str[i]))
-		{
-			while (str[i])
-			{
-				if (str[i] == '-' || str[i] == '+'
-					|| str[i] == '/' || str[i] == '*')
-					return (false);
-				i++;
-			}
-		}
-		if (!str[i])
-			break;
+		if (!std::isdigit(str[i]) && str[i] != '.')
+			return (false);
+		else if (str[i] == '.')
+			countDots++;
 		i++;
 	}
-	if (countOperators > 1)
+	if (countDots > 1)
 		return (false);
 	return (true);
 }
