@@ -6,7 +6,7 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 10:22:00 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/09/06 12:09:47 by dmeirele         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:31:17 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,55 @@ bool	parsing(char** argv)
 	}
 
 	return (true);
+}
+
+void	fordJohnsonSort(std::vector<int>& vec)
+{
+	if (vec.size() <= 1)
+		return;
+
+	// Fase 1: Comparação de pares
+	for (size_t i = 0; i < vec.size() - 1; i += 2)
+	{
+		if (vec[i] > vec[i + 1])
+			std::swap(vec[i], vec[i + 1]);
+	}
+
+	// Fase 2: Ordenação recursiva dos elementos maiores
+	std::vector<int>	larger;
+	for (size_t i = 1; i < vec.size(); i += 2)
+		larger.push_back(vec[i]);
+
+	if (vec.size() % 2 == 1)
+		larger.push_back(vec.back());
+
+	fordJohnsonSort(larger);
+
+	// Fase 3: Inserção dos elementos menores
+	vec.clear();
+	vec.push_back(larger[0]);
+
+	std::vector<size_t> insertSequence = {1};
+	size_t power = 2;
+	while (power < larger.size()) {
+		for (size_t i = power - 1; i < std::min(power * 2 - 1, larger.size()); ++i) {
+			insertSequence.push_back(i);
+		}
+		power *= 2;
+	}
+
+	for (size_t index : insertSequence) {
+		if (index < larger.size()) {
+			binaryInsert(vec, 0, vec.size(), larger[index]);
+		}
+	}
+
+	// Inserir os elementos menores restantes
+	for (size_t i = 0; i < larger.size(); i++) {
+		if (std::find(insertSequence.begin(), insertSequence.end(), i) == insertSequence.end()) {
+			binaryInsert(vec, 0, vec.size(), larger[i]);
+		}
+	}
 }
 
 void insertionSortVector(std::vector<int>& num_vector, int left, int right)
