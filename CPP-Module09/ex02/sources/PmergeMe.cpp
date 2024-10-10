@@ -75,35 +75,36 @@ void	PmergeMe(char** argv)
 	cout << RESET << endl;
 
 	clock_t start_vector = clock();
-	mergeInsertionSortVector(num_vector, 0, num_vector.size() - 1);
+	fordJohnsonSortVector(num_vector);
+//	mergeInsertionSortVector(num_vector, 0, num_vector.size() - 1);
 	clock_t end_vector = clock();
 
-	std::cout << "After:  ";
+	cout << "After:  ";
 	for (size_t i = 0; i < num_vector.size(); i++)
-		std::cout << GREEN << num_vector[i] << " ";
-	std::cout << RESET << std::endl;
+		cout << GREEN << num_vector[i] << " ";
+	cout << RESET << endl;
 
 	double time_taken_vector = double(end_vector - start_vector) / CLOCKS_PER_SEC * 1000000.0;
 	cout << CYAN << "Time to process a range of " << num_vector.size() << " elements with std::vector : " << time_taken_vector << " us" << RESET <<endl;
 
 	cout << endl;
 
-	std::cout << "Before: ";
+	cout << "Before: ";
 	for (std::list<int>::const_iterator it = num_list.begin(); it != num_list.end(); ++it)
-		std::cout << RED << *it << " ";
-	std::cout << RESET << std::endl;
+		cout << RED << *it << " ";
+	cout << RESET << endl;
 
 	clock_t start_list = clock();
-	mergeInsertionSortList(num_list);
+	fordJohnsonSortList(num_list);
 	clock_t end_list = clock();
 
-	std::cout << "After:  ";
+	cout << "After:  ";
 	for (std::list<int>::const_iterator it = num_list.begin(); it != num_list.end(); ++it)
-		std::cout << GREEN << *it << " ";
-	std::cout << RESET << std::endl;
+		cout << GREEN << *it << " ";
+	cout << RESET << endl;
 
 	double time_taken_list = double(end_list - start_list) / CLOCKS_PER_SEC * 1000000.0;
-	std::cout << CYAN << "Time to process a range of " << num_list.size() << " elements with std::list : " << time_taken_list << " us" << RESET << std::endl;
+	cout << CYAN << "Time to process a range of " << num_list.size() << " elements with std::list : " << time_taken_list << " us" << RESET << endl;
 }
 
 bool	parsing(char** argv)
@@ -167,11 +168,10 @@ bool	parsing(char** argv)
 		cout << CYAN << "Already Sorted." << RESET << endl;
 		return (false);
 	}
-
 	return (true);
 }
 
-void	fordJohnsonSort(std::vector<int>& vec)
+void fordJohnsonSortVector(std::vector<int>& vec)
 {
 	if (vec.size() <= 1)
 		return;
@@ -184,133 +184,96 @@ void	fordJohnsonSort(std::vector<int>& vec)
 	}
 
 	// Fase 2: Ordenação recursiva dos elementos maiores
-	std::vector<int>	larger;
-	for (size_t i = 1; i < vec.size(); i += 2)
-		larger.push_back(vec[i]);
-
-	if (vec.size() % 2 == 1)
-		larger.push_back(vec.back());
-
-	fordJohnsonSort(larger);
-
-	// Fase 3: Inserção dos elementos menores
-	vec.clear();
-	vec.push_back(larger[0]);
-
-	std::vector<size_t> insertSequence = {1};
-	size_t power = 2;
-	while (power < larger.size()) {
-		for (size_t i = power - 1; i < std::min(power * 2 - 1, larger.size()); ++i) {
-			insertSequence.push_back(i);
-		}
-		power *= 2;
+	std::vector<int> larger;
+	std::vector<int> smaller;
+	for (size_t i = 0; i < vec.size(); i += 2)
+	{
+		smaller.push_back(vec[i]);
+		if (i + 1 < vec.size())
+			larger.push_back(vec[i + 1]);
 	}
 
-	for (size_t index : insertSequence) {
-		if (index < larger.size()) {
-			binaryInsert(vec, 0, vec.size(), larger[index]);
-		}
-	}
+	fordJohnsonSortVector(larger);
 
-	// Inserir os elementos menores restantes
-	for (size_t i = 0; i < larger.size(); i++) {
-		if (std::find(insertSequence.begin(), insertSequence.end(), i) == insertSequence.end()) {
-			binaryInsert(vec, 0, vec.size(), larger[i]);
-		}
-	}
+	// Fase 3: Inserção dos elementos
+	std::vector<int> result = larger;
+
+	// Inserir elementos menores
+	for (size_t i = 0; i < smaller.size(); ++i)
+		binaryInsertVector(result, 0, result.size(), smaller[i]);
+
+	vec = result;
 }
 
-void insertionSortVector(std::vector<int>& num_vector, int left, int right)
+void binaryInsertVector(std::vector<int>& vec, int start, int end, int value)
 {
-	for (int i = left + 1; i <= right; i++)
+	while (start < end)
 	{
-		int key = num_vector[i];
-		int j = i - 1;
-		while (j >= left && num_vector[j] > key)
-		{
-			num_vector[j + 1] = num_vector[j];
-			j--;
-		}
-		num_vector[j + 1] = key;
-	}
-}
-
-void mergeVector(std::vector<int>& num_vector, int left, int mid, int right)
-{
-	std::vector<int> temp(right - left + 1);
-	int	i = left;
-	int	j = mid +  1;
-	int	k = 0;
-
-	while (i <= mid && j <= right)
-	{
-		if (num_vector[i] <= num_vector[j])
-			temp[k++] = num_vector[i++];
+		int mid = start + (end - start) / 2;
+		if (vec[mid] < value)
+			start = mid + 1;
 		else
-			temp[k++] = num_vector[j++];
+			end = mid;
 	}
-
-	while (i <= mid)
-		temp[k++] = num_vector[i++];
-
-	while (j <= right)
-		temp[k++] = num_vector[j++];
-
-	for (int p = 0; p < k; p++)
-		num_vector[left + p] = temp[p];
+	vec.insert(vec.begin() + start, value);
 }
 
-void mergeInsertionSortVector(std::vector<int>& num_vector, int left, int right)
+void binaryInsertList(std::list<int>& lst, int value)
 {
-	if (right - left <= 10) {
-		insertionSortVector(num_vector, left, right);
+	std::list<int>::iterator it = lst.begin();
+	while (it != lst.end() && *it < value)
+		++it;
+	lst.insert(it, value);
+}
+
+void fordJohnsonSortList(std::list<int>& lst)
+{
+	if (lst.size() <= 1)
 		return;
+
+	// Fase 1: Comparação de pares
+	std::list<int>::iterator it = lst.begin();
+	std::list<int>::iterator next;
+	while (it != lst.end())
+	{
+		next = it;
+		++next;
+		if (next != lst.end())
+		{
+			if (*it > *next)
+			{
+				int temp = *it;
+				*it = *next;
+				*next = temp;
+			}
+			++it;
+		}
+		++it;
 	}
 
-	int mid = left + (right - left) / 2;
-	mergeInsertionSortVector(num_vector, left, mid);
-	mergeInsertionSortVector(num_vector, mid + 1, right);
-	mergeVector(num_vector, left, mid, right);
-}
-
-void mergeList(std::list<int>& left, std::list<int>& right, std::list<int>& result)
-{
-	result.clear();
-	while (!left.empty() && !right.empty()) {
-		if (left.front() <= right.front()) {
-			result.push_back(left.front());
-			left.pop_front();
-		} else {
-			result.push_back(right.front());
-			right.pop_front();
+	// Fase 2: Ordenação recursiva dos elementos maiores
+	std::list<int> larger;
+	std::list<int> smaller;
+	it = lst.begin();
+	while (it != lst.end())
+	{
+		smaller.push_back(*it);
+		++it;
+		if (it != lst.end())
+		{
+			larger.push_back(*it);
+			++it;
 		}
 	}
-	result.insert(result.end(), left.begin(), left.end());
-	result.insert(result.end(), right.begin(), right.end());
-}
 
-void mergeInsertionSortList(std::list<int>& num_list)
-{
-	if (num_list.size() <= 1)
-		return;
+	fordJohnsonSortList(larger);
 
-	if (num_list.size() <= 10)
-	{
-		num_list.sort();
-		return;
-	}
+	// Fase 3: Inserção dos elementos
+	std::list<int> result = larger;
 
-	std::list<int> left;
-	std::list<int> right;
-	int middle = num_list.size() / 2;
-	std::list<int>::iterator it = num_list.begin();
-	std::advance(it, middle);
+	// Inserir elementos menores
+	for (std::list<int>::iterator it = smaller.begin(); it != smaller.end(); ++it)
+		binaryInsertList(result, *it);
 
-	left.splice(left.begin(), num_list, num_list.begin(), it);
-	right.splice(right.begin(), num_list, it, num_list.end());
-
-	mergeInsertionSortList(left);
-	mergeInsertionSortList(right);
-
-	mergeList(left, right, num_list);
+	lst = result;
 }
